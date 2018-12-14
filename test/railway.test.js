@@ -1,4 +1,5 @@
 /* eslint max-lines-per-function: 0 */
+/* eslint max-lines: 0 */
 const { expect } = require('chai')
 
 const railway = require('..')
@@ -117,6 +118,74 @@ describe('railway', () => {
 
 			await piped(-5)
 			expect(success).to.equal(true)
+		})
+	})
+
+	context('given throwing async functions', () => {
+		it('is able to catch errors from first function', async () => {
+			const upsetAsync = () => Promise.reject(new Error('I am upset!'))
+			const stringify = x => `Number is: ${x}`
+			const formatError = err => `Failed to run pipeline due to "${err.message}"`
+
+			const piped = railway(
+				upsetAsync,
+				[stringify, formatError]
+			)
+
+			const result = await piped(-5)
+			expect(result).to.equal('Failed to run pipeline due to "I am upset!"')
+		})
+	})
+
+	context('given throwing async functions', () => {
+		it('is able to catch errors from not first function', async () => {
+			const tap = x => x
+			const upsetAsync = () => Promise.reject(new Error('I am upset!'))
+			const stringify = x => `Number is: ${x}`
+			const formatError = err => `Failed to run pipeline due to "${err.message}"`
+
+			const piped = railway(
+				tap,
+				upsetAsync,
+				[stringify, formatError]
+			)
+
+			const result = await piped(-5)
+			expect(result).to.equal('Failed to run pipeline due to "I am upset!"')
+		})
+	})
+
+	context('given throwing normal functions', () => {
+		it('is able to catch errors if from first function', async () => {
+			const upset = () => { throw new Error('I am upset!') }
+			const stringify = x => `Number is: ${x}`
+			const formatError = err => `Failed to run pipeline due to "${err.message}"`
+
+			const piped = railway(
+				upset,
+				[stringify, formatError]
+			)
+
+			const result = await piped(-5)
+			expect(result).to.equal('Failed to run pipeline due to "I am upset!"')
+		})
+	})
+
+	context('given throwing normal functions', () => {
+		it('is able to catch errors if from other than first function', async () => {
+			const tap = x => x
+			const upset = () => { throw new Error('I am upset!') }
+			const stringify = x => `Number is: ${x}`
+			const formatError = err => `Failed to run pipeline due to "${err.message}"`
+
+			const piped = railway(
+				tap,
+				upset,
+				[stringify, formatError]
+			)
+
+			const result = await piped(-5)
+			expect(result).to.equal('Failed to run pipeline due to "I am upset!"')
 		})
 	})
 })

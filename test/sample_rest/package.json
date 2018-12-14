@@ -1,0 +1,22 @@
+{
+  "name": "railway_rest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "nodemon": "^1.18.8"
+  }
+}

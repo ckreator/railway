@@ -23,13 +23,19 @@ const STATUS = new Map([
 
 const InvalidStatus = () => new Error('InvalidStatus')
 const isStatus = status => STATUS.has(status)
-const validateStatus = status => (isStatus(status) ? status : Promise.reject(InvalidStatus()))
 
 const InvalidTask = () => new Error('InvalidTask')
 const isValidTask = task => isString(task) && task.length > 0 && task.length < 200
-const validateTask = task => (isValidTask(task) ? task : Promise.reject(InvalidTask()))
 
-const validateTodo = todo => validateStatus(todo.status) && validateTask(todo.task) && todo
+const validateTodo = (todo) => {
+	if (!isStatus(todo.status)) {
+		throw InvalidStatus()
+	}
+	if (!isValidTask(todo.task)) {
+		throw InvalidTask()
+	}
+	return todo
+}
 
 module.exports = {
 	validateID,

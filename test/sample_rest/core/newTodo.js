@@ -7,6 +7,7 @@ const { formatter, validateTodo } = require('./shared')
 const addID = todo => ({ ...todo, id: uuidV4() })
 
 const newTodo = railway(
+	todo => (console.log('TODO:', todo), todo),
 	addID,
 	validateTodo,
 	Storage.saveTodo,

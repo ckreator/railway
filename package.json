@@ -1,6 +1,6 @@
 {
   "name": "railway-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A small repo that helps write railway-oriented JS",
   "main": "index.js",
   "author": "ckreator",
